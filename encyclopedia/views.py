@@ -17,3 +17,11 @@ def show_entry(request,entry):
         "entry": entry,
         "entry_text": markdown2.markdown (entry_text)
     })
+
+def search(request):
+    search_text=request.GET['q']
+    search_results=["CSS","Walchwil","Python"]
+    return render(request,"encyclopedia/search.html",{
+        "search_text":search_text,
+        "search_results":search_results 
+    })
