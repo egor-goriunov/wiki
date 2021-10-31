@@ -1,0 +1,9 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Wikipedia 2.0 {{entry}}
+{% endblock %}
+
+{% block body %}
+    {{entry_text|safe}}
+{% endblock %}
