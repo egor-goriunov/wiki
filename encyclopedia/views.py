@@ -1,6 +1,6 @@
 from operator import is_not
 from django.shortcuts import render
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 import markdown2
 from . import util
   
@@ -42,5 +42,26 @@ def new_entry(request):
         if not (util.get_entry(entry_title) is None):
             return render(request,"encyclopedia/message.html",{"msg_title":"Error","msg_text":"This entry already exists"})
         util.save_entry(entry_title, entry_text)
-        return render(request,"encyclopedia/message.html",{"msg_title":"Success ","msg_text":"Your entry has been successfully created"})
+        return HttpResponseRedirect(f"wiki/{entry_title}") 
     return render(request,"encyclopedia/new_entry.html",{})
+
+def edit_entry(request):
+    if request.method == "POST":
+        entry_title=request.POST['entry']
+        if entry_title == "": 
+            return render(request,"encyclopedia/message.html",{"msg_title":"Error","msg_text":"Entry title is empty"})
+        entry_text=request.POST['entry_text']
+        if entry_text == "":
+            return render(request,"encyclopedia/message.html",{"msg_title":"Error","msg_text":"Entry text is empty"})
+        util.save_entry(entry_title, entry_text)
+        return HttpResponseRedirect(f"wiki/{entry_title}") 
+    if "entry" in request.GET.keys(): 
+        entry_title=request.GET['entry']
+    else:
+        return render(request,"encyclopedia/message.html",{"msg_title":"Error","msg_text":"Entry not specified"}) 
+    if entry_title == "": 
+        return render(request,"encyclopedia/message.html",{"msg_title":"Error","msg_text":"Entry title is empty"})
+    entry_text=util.get_entry(entry_title)
+    if entry_text is None:
+        return render(request,"encyclopedia/message.html",{"msg_title":"Error","msg_text":f"Entry {entry_title} does not exist"})    
+    return render(request,"encyclopedia/edit_entry.html",{"entry":entry_title, "entry_text":entry_text})

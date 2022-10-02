@@ -1,5 +1,5 @@
-#Egor
-
-Egor is a very nice guy
-
-No comments, it's not true
+#Egor
+
+Is cool
+
+And likes to say suiiii

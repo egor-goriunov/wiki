@@ -5,5 +5,8 @@
 {% endblock %}
 
 {% block body %}
-    {{entry_text|safe}}
+    <div class="row row-cols-1">
+        <div class="col">{{entry_text|safe}}</div>
+        <div class="col" style="text-align: right;padding-right: 10%;"><a href="{% url 'edit_entry' %}?entry={{entry}}"> Edit Entry</a></div>
+    </div>
 {% endblock %}
